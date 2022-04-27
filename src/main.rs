@@ -84,90 +84,90 @@ fn main() {
 //     todo!()
 // }
 
-#[derive(Debug, PartialEq)]
-pub enum Comparison {
-    Equal,
-    Sublist,
-    Superlist,
-    Unequal,
-}
+// #[derive(Debug, PartialEq)]
+// pub enum Comparison {
+//     Equal,
+//     Sublist,
+//     Superlist,
+//     Unequal,
+// }
 
-pub fn sublist<T: PartialEq>(first_list: &[T], second_list: &[T]) -> Comparison {
-    if first_list == second_list {
-        return Comparison::Equal;
-    }
+// pub fn sublist<T: PartialEq>(first_list: &[T], second_list: &[T]) -> Comparison {
+//     if first_list == second_list {
+//         return Comparison::Equal;
+//     }
 
-    if first_list.is_empty() {
-        return Comparison::Sublist;
-    }
+//     if first_list.is_empty() {
+//         return Comparison::Sublist;
+//     }
 
-    if second_list.is_empty() {
-        return Comparison::Superlist;
-    }
+//     if second_list.is_empty() {
+//         return Comparison::Superlist;
+//     }
 
-    let (first_list_len, second_list_len) = (first_list.len(), second_list.len());
+//     let (first_list_len, second_list_len) = (first_list.len(), second_list.len());
 
-    let (shortest, longest, shortest_len) = if first_list_len > second_list_len {
-        (second_list, first_list, second_list_len)
-    } else {
-        (first_list, second_list, first_list_len)
-    };
+//     let (shortest, longest, shortest_len) = if first_list_len > second_list_len {
+//         (second_list, first_list, second_list_len)
+//     } else {
+//         (first_list, second_list, first_list_len)
+//     };
 
-    for win in longest.windows(shortest_len) {
-        if win == shortest {
-            if first_list_len > second_list_len {
-                return Comparison::Superlist;
-            } else {
-                return Comparison::Sublist;
-            }
-        }
-    }
+//     for win in longest.windows(shortest_len) {
+//         if win == shortest {
+//             if first_list_len > second_list_len {
+//                 return Comparison::Superlist;
+//             } else {
+//                 return Comparison::Sublist;
+//             }
+//         }
+//     }
 
-    Comparison::Unequal
-}
+//     Comparison::Unequal
+// }
 
-macro_rules! orbital_period {
-    ($i:ty, $x:literal) => {
-        impl Planet for $i {
-            fn years_during(d: &Duration) -> f64 {
-                d.0 as f64 / (Self::EARTH_YEAR_SECONDS * $x)
-            }
-        }
-    };
-}
+// macro_rules! orbital_period {
+//     ($i:ty, $x:literal) => {
+//         impl Planet for $i {
+//             fn years_during(d: &Duration) -> f64 {
+//                 d.0 as f64 / (Self::EARTH_YEAR_SECONDS * $x)
+//             }
+//         }
+//     };
+// }
 
-#[derive(Debug)]
-pub struct Duration(u64);
+// #[derive(Debug)]
+// pub struct Duration(u64);
 
-impl From<u64> for Duration {
-    fn from(s: u64) -> Self {
-        Duration(s)
-    }
-}
+// impl From<u64> for Duration {
+//     fn from(s: u64) -> Self {
+//         Duration(s)
+//     }
+// }
 
-pub trait Planet {
-    const EARTH_YEAR_SECONDS: f64 = 31557600.0;
+// pub trait Planet {
+//     const EARTH_YEAR_SECONDS: f64 = 31557600.0;
 
-    fn years_during(d: &Duration) -> f64;
-}
+//     fn years_during(d: &Duration) -> f64;
+// }
 
-pub struct Mercury;
-pub struct Venus;
-pub struct Earth;
-pub struct Mars;
-pub struct Jupiter;
-pub struct Saturn;
-pub struct Uranus;
-pub struct Neptune;
+// pub struct Mercury;
+// pub struct Venus;
+// pub struct Earth;
+// pub struct Mars;
+// pub struct Jupiter;
+// pub struct Saturn;
+// pub struct Uranus;
+// pub struct Neptune;
 
-orbital_period!(Mercury, 0.2408467);
-orbital_period!(Venus, 0.61519726);
-orbital_period!(Earth, 1.0);
-orbital_period!(Mars, 1.8808158);
-orbital_period!(Jupiter, 11.862615);
-orbital_period!(Saturn, 29.447498);
-orbital_period!(Uranus, 84.016846);
-orbital_period!(Neptune, 164.79132);
+// orbital_period!(Mercury, 0.2408467);
+// orbital_period!(Venus, 0.61519726);
+// orbital_period!(Earth, 1.0);
+// orbital_period!(Mars, 1.8808158);
+// orbital_period!(Jupiter, 11.862615);
+// orbital_period!(Saturn, 29.447498);
+// orbital_period!(Uranus, 84.016846);
+// orbital_period!(Neptune, 164.79132);
 
 // impl Planet for Mercury {
 //     fn years_during(d: &Duration) -> f64 {
@@ -210,231 +210,396 @@ orbital_period!(Neptune, 164.79132);
 //     }
 // }
 
-pub fn annotate(minefield: &[&str]) -> Vec<String> {
-    let mine = Some("*".as_bytes().get(0).unwrap());
-    let mut output = vec![];
+// pub fn annotate(minefield: &[&str]) -> Vec<String> {
+//     let mine = Some("*".as_bytes().get(0).unwrap());
+//     let mut output = vec![];
 
-    for (y, row) in minefield.iter().enumerate() {
-        let mut output_row = String::new();
-        let cols = row.as_bytes();
+//     for (y, row) in minefield.iter().enumerate() {
+//         let mut output_row = String::new();
+//         let cols = row.as_bytes();
 
-        for (x, cell) in cols.iter().enumerate() {
-            if Some(cell) == mine {
-                output_row.push(*cell as char);
-                continue;
-            }
+//         for (x, cell) in cols.iter().enumerate() {
+//             if Some(cell) == mine {
+//                 output_row.push(*cell as char);
+//                 continue;
+//             }
 
-            let bottom_row = minefield.get(y + 1);
-            let top_row = if y == 0 { None } else { minefield.get(y - 1) };
+//             let bottom_row = minefield.get(y + 1);
+//             let top_row = if y == 0 { None } else { minefield.get(y - 1) };
 
-            let bottom = minefield.get(y + 1).and_then(|z| z.as_bytes().get(x));
-            let top = if y == 0 {
-                None
-            } else {
-                minefield.get(y - 1).and_then(|z| z.as_bytes().get(x))
-            };
-            let right = cols.get(x + 1);
-            let left = if x == 0 { None } else { cols.get(x - 1) };
-            let bottom_left = if x == 0 {
-                None
-            } else {
-                bottom_row.and_then(|z| z.as_bytes().get(x - 1))
-            };
-            let bottom_right = bottom_row.and_then(|z| z.as_bytes().get(x + 1));
-            let top_left = if x == 0 {
-                None
-            } else {
-                top_row.and_then(|z| z.as_bytes().get(x - 1))
-            };
-            let top_right = top_row.and_then(|z| z.as_bytes().get(x + 1));
+//             let bottom = minefield.get(y + 1).and_then(|z| z.as_bytes().get(x));
+//             let top = if y == 0 {
+//                 None
+//             } else {
+//                 minefield.get(y - 1).and_then(|z| z.as_bytes().get(x))
+//             };
+//             let right = cols.get(x + 1);
+//             let left = if x == 0 { None } else { cols.get(x - 1) };
+//             let bottom_left = if x == 0 {
+//                 None
+//             } else {
+//                 bottom_row.and_then(|z| z.as_bytes().get(x - 1))
+//             };
+//             let bottom_right = bottom_row.and_then(|z| z.as_bytes().get(x + 1));
+//             let top_left = if x == 0 {
+//                 None
+//             } else {
+//                 top_row.and_then(|z| z.as_bytes().get(x - 1))
+//             };
+//             let top_right = top_row.and_then(|z| z.as_bytes().get(x + 1));
 
-            let mines_count = [
-                bottom == mine,
-                top == mine,
-                right == mine,
-                left == mine,
-                bottom_left == mine,
-                bottom_right == mine,
-                top_left == mine,
-                top_right == mine,
-            ]
-            .iter()
-            .filter(|x| **x)
-            .count();
+//             let mines_count = [
+//                 bottom == mine,
+//                 top == mine,
+//                 right == mine,
+//                 left == mine,
+//                 bottom_left == mine,
+//                 bottom_right == mine,
+//                 top_left == mine,
+//                 top_right == mine,
+//             ]
+//             .iter()
+//             .filter(|x| **x)
+//             .count();
 
-            let output_char = if mines_count == 0 {
-                ' '
-            } else {
-                char::from_digit(mines_count as u32, 10).unwrap()
-            };
+//             let output_char = if mines_count == 0 {
+//                 ' '
+//             } else {
+//                 char::from_digit(mines_count as u32, 10).unwrap()
+//             };
 
-            output_row.push(output_char);
+//             output_row.push(output_char);
+//         }
+
+//         output.push(output_row);
+//     }
+
+//     output
+// }
+
+/// Check a Luhn checksum.
+pub fn is_valid(code: &str) -> bool {
+    let mut chars = code
+        .chars()
+        .filter(|x| !x.is_whitespace())
+        .rev()
+        .enumerate()
+        .peekable();
+
+    let mut checksum = 0;
+    while let Some((i, c)) = chars.next() {
+        if !c.is_numeric() || (i == 0 && chars.peek().is_none()) {
+            return false;
         }
-
-        output.push(output_row);
+        let to_add = c.to_digit(10).unwrap() * if (i + 1) % 2 == 0 { 2 } else { 1 };
+        checksum += to_add - if to_add > 9 { 9 } else { 0 };
     }
 
-    output
+    checksum % 10 == 0
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
 
-    fn remove_annotations(board: &[&str]) -> Vec<String> {
-        board.iter().map(|r| remove_annotations_in_row(r)).collect()
-    }
-
-    fn remove_annotations_in_row(row: &str) -> String {
-        row.chars()
-            .map(|ch| match ch {
-                '*' => '*',
-
-                _ => ' ',
-            })
-            .collect()
-    }
-
-    fn run_test(test_case: &[&str]) {
-        let cleaned = remove_annotations(test_case);
-
-        let cleaned_strs = cleaned.iter().map(|r| &r[..]).collect::<Vec<_>>();
-
-        let expected = test_case.iter().map(|&r| r.to_string()).collect::<Vec<_>>();
-
-        assert_eq!(expected, annotate(&cleaned_strs));
+    fn process_valid_case(number: &str, is_luhn_expected: bool) {
+        assert_eq!(is_valid(number), is_luhn_expected);
     }
 
     #[test]
 
-    fn no_rows() {
-        #[rustfmt::skip]
-        run_test(&[
-        ]);
+    fn test_single_digit_strings_can_not_be_valid() {
+        process_valid_case("1", false);
     }
 
     #[test]
 
-    fn no_columns() {
-        #[rustfmt::skip]
-        run_test(&[
-            "",
-        ]);
+    fn test_a_single_zero_is_invalid() {
+        process_valid_case("0", false);
     }
 
     #[test]
 
-    fn no_mines() {
-        #[rustfmt::skip]
-        run_test(&[
-            "   ",
-            "   ",
-            "   ",
-        ]);
+    fn test_a_simple_valid_sin_that_remains_valid_if_reversed() {
+        process_valid_case("059", true);
     }
 
     #[test]
 
-    fn board_with_only_mines() {
-        #[rustfmt::skip]
-        run_test(&[
-            "***",
-            "***",
-            "***",
-        ]);
+    fn test_a_simple_valid_sin_that_becomes_invalid_if_reversed() {
+        process_valid_case("59", true);
     }
 
     #[test]
 
-    fn mine_surrounded_by_spaces() {
-        #[rustfmt::skip]
-        run_test(&[
-            "111",
-            "1*1",
-            "111",
-        ]);
+    fn test_a_valid_canadian_sin() {
+        process_valid_case("055 444 285", true);
     }
 
     #[test]
 
-    fn space_surrounded_by_mines() {
-        #[rustfmt::skip]
-        run_test(&[
-            "***",
-            "*8*",
-            "***",
-        ]);
+    fn test_invalid_canadian_sin() {
+        process_valid_case("055 444 286", false);
     }
 
     #[test]
 
-    fn horizontal_line() {
-        #[rustfmt::skip]
-        run_test(&[
-            "1*2*1",
-        ]);
+    fn test_invalid_credit_card() {
+        process_valid_case("8273 1232 7352 0569", false);
     }
 
     #[test]
 
-    fn horizontal_line_mines_at_edges() {
-        #[rustfmt::skip]
-        run_test(&[
-            "*1 1*",
-        ]);
+    fn test_valid_number_with_an_even_number_of_digits() {
+        process_valid_case("095 245 88", true);
     }
 
     #[test]
 
-    fn vertical_line() {
-        #[rustfmt::skip]
-        run_test(&[
-            "1",
-            "*",
-            "2",
-            "*",
-            "1",
-        ]);
+    fn strings_that_contain_non_digits_are_invalid() {
+        process_valid_case("055a 444 285", false);
     }
 
     #[test]
 
-    fn vertical_line_mines_at_edges() {
-        #[rustfmt::skip]
-        run_test(&[
-            "*",
-            "1",
-            " ",
-            "1",
-            "*",
-        ]);
+    fn test_valid_strings_with_punctuation_included_become_invalid() {
+        process_valid_case("055-444-285", false);
     }
 
     #[test]
 
-    fn cross() {
-        #[rustfmt::skip]    run_test(&[
-            " 2*2 ",
-            "25*52",
-            "*****",
-            "25*52",
-            " 2*2 ",
-        ]);
+    fn symbols_are_invalid() {
+        process_valid_case("055£ 444$ 285", false);
     }
 
     #[test]
 
-    fn large_board() {
-        #[rustfmt::skip]
-        run_test(&[
-            "1*22*1",
-            "12*322",
-            " 123*2",
-            "112*4*",
-            "1*22*2",
-            "111111",
-        ]);
+    fn test_single_zero_with_space_is_invalid() {
+        process_valid_case(" 0", false);
     }
+
+    #[test]
+
+    fn test_more_than_a_single_zero_is_valid() {
+        process_valid_case("0000 0", true);
+    }
+
+    #[test]
+
+    fn test_input_digit_9_is_correctly_converted_to_output_digit_9() {
+        process_valid_case("091", true);
+    }
+
+    #[test]
+
+    /// using ascii value for doubled non-digit isn't allowed
+
+    /// Convert non-digits to their ascii values and then offset them by 48 sometimes accidentally declare an invalid string to be valid.
+
+    /// This test is designed to avoid that solution.
+
+    fn test_using_ascii_value_for_doubled_nondigit_isnt_allowed() {
+        process_valid_case(":9", false);
+    }
+
+    #[test]
+
+    /// valid strings with a non-digit added at the end become invalid
+
+    fn test_valid_strings_with_a_nondigit_added_at_the_end_become_invalid() {
+        process_valid_case("059a", false);
+    }
+
+    #[test]
+
+    /// valid strings with symbols included become invalid
+
+    fn test_valid_strings_with_symbols_included_become_invalid() {
+        process_valid_case("055# 444$ 285", false);
+    }
+
+    #[test]
+
+    /// using ascii value for non-doubled non-digit isn't allowed
+
+    /// Convert non-digits to their ascii values and then offset them by 48 sometimes accidentally declare an invalid string to be valid.
+
+    /// This test is designed to avoid that solution.
+
+    fn test_using_ascii_value_for_nondoubled_nondigit_isnt_allowed() {
+        process_valid_case("055b 444 285", false);
+    }
+
+    #[test]
+
+    /// valid number with an odd number of spaces
+
+    fn test_valid_number_with_an_odd_number_of_spaces() {
+        process_valid_case("234 567 891 234", true);
+    }
+
+    #[test]
+
+    /// non-numeric, non-space char in the middle with a sum that's divisible by 10 isn't allowed
+
+    fn test_invalid_char_in_middle_with_sum_divisible_by_10_isnt_allowed() {
+        process_valid_case("59%59", false);
+    }
+
+    // fn remove_annotations(board: &[&str]) -> Vec<String> {
+    //     board.iter().map(|r| remove_annotations_in_row(r)).collect()
+    // }
+
+    // fn remove_annotations_in_row(row: &str) -> String {
+    //     row.chars()
+    //         .map(|ch| match ch {
+    //             '*' => '*',
+
+    //             _ => ' ',
+    //         })
+    //         .collect()
+    // }
+
+    // fn run_test(test_case: &[&str]) {
+    //     let cleaned = remove_annotations(test_case);
+
+    //     let cleaned_strs = cleaned.iter().map(|r| &r[..]).collect::<Vec<_>>();
+
+    //     let expected = test_case.iter().map(|&r| r.to_string()).collect::<Vec<_>>();
+
+    //     assert_eq!(expected, annotate(&cleaned_strs));
+    // }
+
+    // #[test]
+
+    // fn no_rows() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn no_columns() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn no_mines() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "   ",
+    //         "   ",
+    //         "   ",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn board_with_only_mines() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "***",
+    //         "***",
+    //         "***",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn mine_surrounded_by_spaces() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "111",
+    //         "1*1",
+    //         "111",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn space_surrounded_by_mines() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "***",
+    //         "*8*",
+    //         "***",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn horizontal_line() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "1*2*1",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn horizontal_line_mines_at_edges() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "*1 1*",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn vertical_line() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "1",
+    //         "*",
+    //         "2",
+    //         "*",
+    //         "1",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn vertical_line_mines_at_edges() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "*",
+    //         "1",
+    //         " ",
+    //         "1",
+    //         "*",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn cross() {
+    //     #[rustfmt::skip]    run_test(&[
+    //         " 2*2 ",
+    //         "25*52",
+    //         "*****",
+    //         "25*52",
+    //         " 2*2 ",
+    //     ]);
+    // }
+
+    // #[test]
+
+    // fn large_board() {
+    //     #[rustfmt::skip]
+    //     run_test(&[
+    //         "1*22*1",
+    //         "12*322",
+    //         " 123*2",
+    //         "112*4*",
+    //         "1*22*2",
+    //         "111111",
+    //     ]);
+    // }
 
     // fn assert_in_delta(expected: f64, actual: f64) {
     //     let diff: f64 = (expected - actual).abs();
